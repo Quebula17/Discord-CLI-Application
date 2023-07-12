@@ -1,0 +1,16 @@
+name: dart_discord
+description: A sample command-line application.
+version: 1.0.0
+# repository: https://github.com/my_org/my_repo
+
+environment:
+  sdk: ^3.1.0-edge.ed943203b964f7e5def26559b8c15e06ed9b3aa8
+
+# Add regular dependencies here.
+dependencies:
+  # path: ^1.8.0
+  crypto: ^3.0.1
+
+dev_dependencies:
+  lints: ^2.0.0
+  test: ^1.21.0
