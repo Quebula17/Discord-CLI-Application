@@ -5,6 +5,11 @@ import 'dart:io';
 class User {
   String userName;
   String passwordHash;
+<<<<<<< HEAD
+=======
+  List<dynamic>? sent;
+  List<dynamic>? received;
+>>>>>>> c0a5b84 (dm feature)
 
   User(this.userName, this.passwordHash);
 
