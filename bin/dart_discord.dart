@@ -45,12 +45,12 @@ void main() {
   //     print("Sorry, the user does not exist");
   //   }
 
-  // String? messageString = "Hello World";
-  // String senderUsername = "Saurabh";
-  // String receiverUsername = "Aryan";
+  // String? messageString = "TypeScript is better than JavaScript";
+  // String senderUsername = "Aryan";
+  // String receiverUsername = "Saurabh";
 
   // direct_message.sendMessage(senderUsername, receiverUsername, messageString);
 
-  direct_message.printSentMessages("Saurabh");
+  direct_message.printSentMessages("Aryan");
 }
 // }
