@@ -1,10 +1,14 @@
 import 'package:crypto/crypto.dart';
 import 'dart:convert';
 import 'dart:io';
+// import 'package:dart_discord/direct_message.dart' as direct_message;
 
 class User {
   String userName;
   String passwordHash;
+
+  List<dynamic> sentMessageLog = [];
+  List<dynamic> receivedMessageLog = [];
 
   User(this.userName, this.passwordHash);
 
@@ -12,6 +16,8 @@ class User {
     return {
       "username": userName,
       "password": passwordHash,
+      "sentMessages": sentMessageLog,
+      "receivedMessages": receivedMessageLog,
     };
   }
 }
