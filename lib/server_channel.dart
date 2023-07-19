@@ -1,5 +1,4 @@
-import 'dart:io';
-import 'dart:convert';
+import 'package:dart_discord/database.dart' as database;
 
 class ServerMessage {
   String messageContents;
@@ -54,28 +53,14 @@ class Server {
 
 void createServer(serverName, ownerUsername) {
   final server = Server(serverName, ownerUsername);
-  List<dynamic> servers = [];
-  final file = File('servers.json');
-
-  if (file.existsSync()) {
-    final jsonString = file.readAsStringSync();
-    servers = jsonDecode(jsonString) as List<dynamic>;
-  }
-
+  final servers = database.readServerDatabase();
   servers.add(server.serverObject());
-  final jsonString = jsonEncode(servers);
-  file.writeAsStringSync(jsonString);
+  database.writeServerDatabase(servers);
 }
 
 void addChannel(serverName, channelName) {
   final channel = Channel(channelName);
-  List<dynamic> servers = [];
-  final file = File('servers.json');
-
-  if (file.existsSync()) {
-    final jsonString = file.readAsStringSync();
-    servers = jsonDecode(jsonString) as List<dynamic>;
-  }
+  final servers = database.readServerDatabase();
 
   final serverIndex =
       servers.indexWhere((server) => server['serverName'] == serverName);
@@ -88,14 +73,7 @@ void addChannel(serverName, channelName) {
 }
 
 void addMod(moderatorName, serverName, channelName) {
-  List<dynamic> servers = [];
-  final file = File('servers.json');
-
-  if (file.existsSync()) {
-    final jsonString = file.readAsStringSync();
-    servers = jsonDecode(jsonString) as List<dynamic>;
-  }
-
+  final servers = database.readServerDatabase();
   final serverIndex =
       servers.indexWhere((server) => server['serverName'] == serverName);
 
@@ -110,16 +88,8 @@ void addMod(moderatorName, serverName, channelName) {
   }
 }
 
-//Join server, Send Message on Channel, Print Messages, write the main script and make it a package
-
 void joinServer(String serverName, String userName) {
-  List<dynamic> servers = [];
-  final file = File('servers.json');
-
-  if (file.existsSync()) {
-    final jsonString = file.readAsStringSync();
-    servers = jsonDecode(jsonString) as List<dynamic>;
-  }
+  final servers = database.readServerDatabase();
 
   final serverIndex =
       servers.indexWhere((server) => server['serverName'] == serverName);
@@ -134,14 +104,7 @@ void joinServer(String serverName, String userName) {
 void sendMessageOnChannel(String channelName, String messageContents,
     String senderName, String serverName) {
   final message = ServerMessage(messageContents, senderName);
-
-  List<dynamic> servers = [];
-  final file = File('servers.json');
-
-  if (file.existsSync()) {
-    final jsonString = file.readAsStringSync();
-    servers = jsonDecode(jsonString) as List<dynamic>;
-  }
+  final servers = database.readServerDatabase();
 
   final serverIndex =
       servers.indexWhere((server) => server['serverName'] == serverName);
@@ -158,14 +121,7 @@ void sendMessageOnChannel(String channelName, String messageContents,
 }
 
 void printMessages(String serverName, String channelName) {
-  List<dynamic> servers = [];
-  final file = File('servers.json');
-
-  if (file.existsSync()) {
-    final jsonString = file.readAsStringSync();
-    servers = jsonDecode(jsonString) as List<dynamic>;
-  }
-
+  final servers = database.readServerDatabase();
   final serverIndex =
       servers.indexWhere((server) => server['serverName'] == serverName);
 

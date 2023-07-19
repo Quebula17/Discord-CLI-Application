@@ -1,7 +1,10 @@
 name: dart_discord
-description: A sample command-line application.
+description: A simple command-line application emulating discord.
 version: 1.0.0
-# repository: https://github.com/my_org/my_repo
+repository: https://github.com/Quebula17/dart_discord
+
+executables:
+  discord: dart_discord.dart
 
 environment:
   sdk: ^3.1.0-edge.ed943203b964f7e5def26559b8c15e06ed9b3aa8

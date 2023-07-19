@@ -1,6 +1,4 @@
-import 'package:dart_discord/login_user.dart' as login_user;
-import 'dart:io';
-import 'dart:convert';
+import 'package:dart_discord/database.dart' as database;
 
 class Message {
   String messageContents;
@@ -25,7 +23,7 @@ class Message {
 bool inDatabase(String? userName) {
   bool isInDatabase = false;
 
-  final users = login_user.readUsers();
+  final users = database.readUserDatabase();
   for (final user in users) {
     if (user['username'] == userName) {
       isInDatabase = true;
@@ -42,13 +40,7 @@ void sendMessage(
       messageString.isNotEmpty &&
       senderUsername != receiverUsername) {
     final message = Message(messageString, senderUsername, receiverUsername);
-    List<dynamic> users = [];
-    final file = File('users.json');
-
-    if (file.existsSync()) {
-      final jsonString = file.readAsStringSync();
-      users = jsonDecode(jsonString) as List<dynamic>;
-    }
+    final users = database.readUserDatabase();
 
     final senderIndex =
         users.indexWhere((user) => user['username'] == senderUsername);
@@ -57,39 +49,28 @@ void sendMessage(
     final receiverIndex =
         users.indexWhere((user) => user['username'] == receiverUsername);
     users[receiverIndex]['receivedMessages'].add(message.messageObject());
-
-    final jsonString = jsonEncode(users);
-    file.writeAsStringSync(jsonString);
+    database.writeUserDatabase(users);
   }
 }
 
 void printReceivedMessages(String receiverUsername) {
-  List<dynamic> users = [];
-  final file = File('users.json');
-
-  if (file.existsSync()) {
-    final jsonString = file.readAsStringSync();
-    users = jsonDecode(jsonString) as List<dynamic>;
-  }
-
+  final users = database.readUserDatabase();
   final receiverIndex =
       users.indexWhere((user) => user['username'] == receiverUsername);
 
-  for (final message in users[receiverIndex]['receivedMessages']) {
-    print("Sender's Username: ${message['sentBy']}\n"
-        "Time: ${message['dateTime']}\n"
-        "Message: ${message['messageContents']}\n");
+  if (receiverIndex != -1) {
+    for (final message in users[receiverIndex]['receivedMessages']) {
+      print("Sender's Username: ${message['sentBy']}\n"
+          "Time: ${message['dateTime']}\n"
+          "Message: ${message['messageContents']}\n");
+    }
+  } else {
+    print("Enter a valid username");
   }
 }
 
 void printSentMessages(String senderUsername) {
-  List<dynamic> users = [];
-  final file = File('users.json');
-
-  if (file.existsSync()) {
-    final jsonString = file.readAsStringSync();
-    users = jsonDecode(jsonString) as List<dynamic>;
-  }
+  final users = database.readUserDatabase();
 
   final senderIndex =
       users.indexWhere((user) => user['username'] == senderUsername);

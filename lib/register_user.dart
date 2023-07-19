@@ -1,7 +1,6 @@
 import 'package:crypto/crypto.dart';
 import 'dart:convert';
-import 'dart:io';
-// import 'package:dart_discord/direct_message.dart' as direct_message;
+import 'package:dart_discord/database.dart' as database;
 
 class User {
   String userName;
@@ -31,15 +30,7 @@ String hashPassword(String? password) {
 }
 
 void saveUser(User user) {
-  final file = File('users.json');
-  List<dynamic> users = [];
-
-  if (file.existsSync()) {
-    final jsonString = file.readAsStringSync();
-    users = jsonDecode(jsonString) as List<dynamic>;
-  }
-
+  final users = database.readUserDatabase();
   users.add(user.userObject());
-  final jsonString = jsonEncode(users);
-  file.writeAsStringSync(jsonString);
+  database.writeUserDatabase(users);
 }
