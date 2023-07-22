@@ -1,5 +1,6 @@
 import 'package:dart_discord/database.dart' as database;
 import 'package:dart_discord/login_user_db.dart' as login_user_db;
+import 'package:dart_discord/utilities.dart' as utilities;
 
 class Message {
   String messageContents;
@@ -69,6 +70,7 @@ void printReceivedMessages() {
           "Time: ${message['dateTime']}\n"
           "Message: ${message['messageContents']}\n");
     }
+    utilities.messagesRead();
   } else {
     print("No messages to show");
   }

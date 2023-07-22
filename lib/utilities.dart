@@ -1,14 +1,20 @@
 import 'package:dart_discord/database.dart' as database;
+import 'package:dart_discord/login_user.dart';
 import 'package:dart_discord/login_user_db.dart' as login_user_db;
 
-void deleteUserAccount(String userName, String password) {
+void deleteUserAccount(String password) {
   final users = database.readUserDatabase();
-  int userIndex = database.returnUserIndex(userName);
+  int userIndex =
+      database.returnUserIndex(login_user_db.loggedInUser()['username']);
 
-  users.removeAt(userIndex);
-  database.writeUserDatabase(users);
+  if (isCorrectPassword(users[userIndex]['username'], password)) {
+    users.removeAt(userIndex);
+    database.writeUserDatabase(users);
 
-  print("Account was successfully deleted");
+    print("Your account was successfully deleted");
+  } else {
+    print("Incorrect password");
+  }
 }
 
 void messagesRead() {

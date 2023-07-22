@@ -3,7 +3,7 @@ import 'dart:convert';
 
 List<dynamic> readUserDatabase() {
   List<dynamic> users = [];
-  final file = File('users.json');
+  final file = File('users.db');
 
   if (file.existsSync()) {
     final jsonString = file.readAsStringSync();
@@ -14,14 +14,14 @@ List<dynamic> readUserDatabase() {
 }
 
 void writeUserDatabase(List<dynamic> users) {
-  final file = File('users.json');
+  final file = File('users.db');
   final jsonString = jsonEncode(users);
   file.writeAsStringSync(jsonString);
 }
 
 List<dynamic> readServerDatabase() {
   List<dynamic> servers = [];
-  final file = File('servers.json');
+  final file = File('servers.db');
 
   if (file.existsSync()) {
     final jsonString = file.readAsStringSync();
@@ -32,7 +32,7 @@ List<dynamic> readServerDatabase() {
 }
 
 void writeServerDatabase(List<dynamic> servers) {
-  final file = File('servers.json');
+  final file = File('servers.db');
   final jsonString = jsonEncode(servers);
   file.writeAsStringSync(jsonString);
 }

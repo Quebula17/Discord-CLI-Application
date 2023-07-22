@@ -27,8 +27,9 @@ bool isCorrectPassword(String userName, String password) {
 bool logIn(String userName, String password) {
   if (inDatabase(userName) == true &&
       isCorrectPassword(userName, password) == true) {
-    login_user_db
-        .logInUser(register_user.User(userName, password).userObject());
+    login_user_db.logInUser(
+        register_user.User(userName, register_user.hashPassword(password))
+            .userObject());
     return true;
   } else {
     return false;
