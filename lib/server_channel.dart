@@ -19,7 +19,7 @@ class ServerMessage {
 }
 
 class Channel {
-  String? channelName;
+  String channelName;
   List<String> moderatorList = [];
   List<dynamic> messageLog = [];
 

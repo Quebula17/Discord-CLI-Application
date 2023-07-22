@@ -8,6 +8,8 @@ Map<String, dynamic> loggedInUser() {
   if (file.existsSync()) {
     final jsonString = file.readAsStringSync();
     loggedUser = jsonDecode(jsonString) as Map<String, dynamic>;
+  } else {
+    loggedUser = {};
   }
 
   return loggedUser;
@@ -21,6 +23,6 @@ void logInUser(Map<String, dynamic> user) {
 
 void logOutUser() {
   final file = File('loggedUser.json');
-  final jsonString = {};
-  file.writeAsStringSync(jsonString as String);
+  Map<dynamic, dynamic> jsonString = {};
+  file.writeAsStringSync(jsonString.toString());
 }

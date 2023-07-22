@@ -36,3 +36,10 @@ void writeServerDatabase(List<dynamic> servers) {
   final jsonString = jsonEncode(servers);
   file.writeAsStringSync(jsonString);
 }
+
+int returnUserIndex(String userName) {
+  final users = readUserDatabase();
+  final userIndex = users.indexWhere((user) => user['username'] == userName);
+
+  return userIndex;
+}
