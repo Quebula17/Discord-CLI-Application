@@ -38,3 +38,17 @@ void saveUser(String userName, String password) {
     print("Username taken, enter another username");
   }
 }
+
+void showCommands() {
+  print("discord register <username> <password>\n");
+  print('discord login <username> <password>\n');
+  print('discord login <username> <password>\n');
+  print("discord send <receiver's username>\n");
+  print("discord logout\n");
+  print("discord print received and discord print sent\n");
+  print("discord showserver <server name>\n");
+  print("discord createserver <server name>\n");
+  print("discord joinserver <server name>\n");
+  print("discord addmod <moderator username> <server name>\n");
+  print("discord message <channel name> <category name> <server name>\n");
+}
