@@ -26,7 +26,7 @@ class Channel {
   String channelName;
   List<dynamic> messageLog = [];
   String channelCategory;
-  bool onlyModAccess;
+  String onlyModAccess;
   String channelType;
 
   Channel(this.channelName, this.channelCategory, this.onlyModAccess,
@@ -93,8 +93,10 @@ void addChannel(
   if (serverIndex != -1 &&
       server['ownerUsername'] == login_user_db.loggedInUser()['username']) {
     server['channels'].add(channel.channelObject());
-    server['categoryToChannels'][categoryName].add(channelName);
+    final list = server['categoryToChannels'][categoryName] as List;
+    list.add((channelName));
     database.writeServerDatabase(servers);
+    print("channel created successfully");
   } else {
     print("The server with the given name does not exist");
   }

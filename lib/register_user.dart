@@ -51,4 +51,6 @@ void showCommands() {
   print("discord joinserver <server name>\n");
   print("discord addmod <moderator username> <server name>\n");
   print("discord message <channel name> <category name> <server name>\n");
+  print(
+      "discord createchannel <channel name> <category name> <server name> <onlyMod access> <channel type>\n");
 }

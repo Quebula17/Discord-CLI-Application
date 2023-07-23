@@ -113,6 +113,22 @@ void main(List<String> args) {
           channelName, messageString!, serverName, categoryName);
     } else if (command == "commands") {
       register_user.showCommands();
+    } else if (command == "createchannel") {
+      if (args.length != 6) {
+        print(
+            "Usage: discord createchannel <channel name> <category name> <server name> <onlyMod access> <channel type>");
+        // serverName, channelName, categoryName, onlyModAccess, channelType
+        return;
+      }
+
+      final channelName = args[1];
+      final categoryName = args[2];
+      final serverName = args[3];
+      final onlyModAccess = args[4];
+      final channelType = args[5];
+
+      server_channel.addChannel(
+          serverName, channelName, categoryName, onlyModAccess, channelType);
     } else {
       print("Incorrect command, watchOut for documentation!");
     }

@@ -12,6 +12,8 @@ void addMod(moderatorName, serverName) {
       login_user_db.loggedInUser()['username'] ==
           servers[serverIndex]['ownerUsername']) {
     servers[serverIndex]['moderatorList'].add(moderatorName);
+    database.writeServerDatabase(servers);
+    print("$moderatorName was made moderator successfully");
   } else {
     if (serverIndex == -1) {
       print("The server with the given name does not exist");
