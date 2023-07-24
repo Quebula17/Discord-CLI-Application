@@ -3,6 +3,7 @@ import 'package:dart_discord/login_user_db.dart' as login_user_db;
 import 'package:dart_discord/server_utilities.dart' as server_utilities;
 import 'package:dart_discord/login_user.dart' as login_user;
 import 'package:dart_discord/moderator.dart' as moderator;
+import 'package:dart_discord/categories.dart' as categories;
 
 class ServerMessage {
   String messageContents;
@@ -49,8 +50,7 @@ class Server {
   List<String> moderatorList = [];
   List<String> usersList = [];
   List<dynamic> channels = [];
-  Map<String, List<String>> categoryToUsers = {};
-  Map<String, List<String>> categoryToChannels = {};
+  List<dynamic> categories = [];
 
   Server(this.serverName, this.ownerUsername);
 
@@ -61,8 +61,7 @@ class Server {
       "usersList": usersList,
       "channels": channels,
       "moderatorList": moderatorList,
-      "categoryToUsers": categoryToUsers,
-      "categoryToChannels": categoryToChannels,
+      "categories": categories,
     };
   }
 }
@@ -71,6 +70,7 @@ void createServer(serverName) {
   try {
     final ownerUsername = login_user_db.loggedInUser()['username'];
     final server = Server(serverName, ownerUsername);
+    server.usersList.add(ownerUsername);
     final servers = database.readServerDatabase();
     servers.add(server.serverObject());
     database.writeServerDatabase(servers);
@@ -88,15 +88,26 @@ void addChannel(
 
   final serverIndex =
       servers.indexWhere((server) => server['serverName'] == serverName);
-  final server = servers[serverIndex];
 
-  if (serverIndex != -1 &&
-      server['ownerUsername'] == login_user_db.loggedInUser()['username']) {
-    server['channels'].add(channel.channelObject());
-    final list = server['categoryToChannels'][categoryName] as List;
-    list.add((channelName));
-    database.writeServerDatabase(servers);
-    print("channel created successfully");
+  if (serverIndex != -1) {
+    final server = servers[serverIndex];
+    if (serverIndex != -1 &&
+        server['ownerUsername'] == login_user_db.loggedInUser()['username']) {
+      server['channels'].add(channel.channelObject());
+
+      if (categories.categoryExists(serverName, categoryName) == true) {
+        final category =
+            categories.returnCategoryInServer(serverName, categoryName);
+        category['channelsInCategory'].add(categoryName);
+      } else {
+        final newCategory = categories.Category(categoryName);
+        newCategory.channelsInCategory.add(channelName);
+        server['categories'].add(newCategory.categoryObject());
+      }
+
+      database.writeServerDatabase(servers);
+      print("channel created successfully");
+    }
   } else {
     print("The server with the given name does not exist");
   }
@@ -149,11 +160,13 @@ void sendMessageOnChannel(String channelName, String messageContents,
 
   if (serverIndex != -1 && channelIndex != -1) {
     if (server_utilities.userIsInCategory(categoryName, serverName) == true &&
-            isModOnly == false ||
+            isModOnly == "false" ||
         moderator.isModerator(username, serverName)) {
       channelsInServer[channelIndex]['messageLog'].add(message.messageObject());
       database.writeServerDatabase(servers);
       print("Message sent successfully!");
+    } else {
+      print("you don't have the access to send messages on the channel");
     }
   } else {
     print("Either the server or the channel doesn't exist");
@@ -198,14 +211,13 @@ void printServer(String serverName) {
 
 void joinCategory(String categoryName, String serverName) {
   final servers = database.readServerDatabase();
-  final serverIndex =
-      servers.indexWhere((server) => server['serverName'] == serverName);
-
   final username = login_user_db.loggedInUser()['username'];
 
-  if (server_utilities.isInServer(username, serverName)) {
-    final server = servers[serverIndex];
-    server['categoryToUsers'][categoryName].add(username);
+  if (server_utilities.isInServer(username, serverName) &&
+      categories.categoryExists(serverName, categoryName)) {
+    final category =
+        categories.returnCategoryInServer(serverName, categoryName);
+    category['usersInCategory'].add(username);
     database.writeServerDatabase(servers);
   } else {
     print("join server in order to join categories");

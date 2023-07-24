@@ -1,6 +1,7 @@
 import 'package:dart_discord/database.dart' as database;
 import 'package:dart_discord/login_user.dart';
 import 'package:dart_discord/login_user_db.dart' as login_user_db;
+import 'dart:io';
 
 void deleteUserAccount(String password) {
   final users = database.readUserDatabase();
@@ -40,4 +41,14 @@ int totalUnreadMessages() {
     }
   }
   return counter;
+}
+
+String? promptForPassword(String prompt) {
+  stdout.write(prompt);
+  stdin.echoMode = false;
+  final password = stdin.readLineSync();
+  stdin.echoMode = true;
+  stdout.write("\n");
+
+  return password;
 }

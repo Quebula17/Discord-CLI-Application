@@ -13,14 +13,19 @@ void main(List<String> args) {
     final command = args[0];
 
     if (command == 'register') {
-      if (args.length != 3) {
-        print("Usage: discord register <username> <password>");
+      if (args.length != 2) {
+        print("Usage: discord register <username>");
         return;
       }
       final username = args[1];
-      final password = args[2];
+      final password = utilities.promptForPassword("Enter Password: ");
+      final confirmPassword = utilities.promptForPassword("Confirm Password: ");
 
-      register_user.saveUser(username, password);
+      if (password == confirmPassword) {
+        register_user.saveUser(username, password!);
+      } else {
+        print("passwords do not match");
+      }
     } else if (command == 'login') {
       if (args.length != 3) {
         print('Usage: discord login <username> <password>');

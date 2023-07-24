@@ -25,7 +25,7 @@ void addMod(moderatorName, serverName) {
   }
 }
 
-List<String> printModerators(String serverName) {
+List<dynamic> printModerators(String serverName) {
   final servers = database.readServerDatabase();
   final serverIndex =
       servers.indexWhere((server) => server['serverName'] == serverName);

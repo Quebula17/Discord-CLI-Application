@@ -26,12 +26,22 @@ bool isCorrectPassword(String userName, String password) {
 
 bool logIn(String userName, String password) {
   if (inDatabase(userName) == true &&
-      isCorrectPassword(userName, password) == true) {
+      isCorrectPassword(userName, password) == true &&
+      login_user_db.loggedInUser()['username'] != userName) {
     login_user_db.logInUser(
         register_user.User(userName, register_user.hashPassword(password))
             .userObject());
     return true;
   } else {
+    if (inDatabase(userName) == false) {
+      print("the user does not exist");
+    } else if (isCorrectPassword(userName, password) == false) {
+      print("incorrect password entered");
+    } else if (login_user_db.loggedInUser()['username'] == userName) {
+      print("you are already logged in");
+    } else {
+      print("you need to logout before you can login with another account");
+    }
     return false;
   }
 }
