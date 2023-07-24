@@ -5,10 +5,11 @@ import 'package:dart_discord/login_user.dart' as login_user;
 import 'package:dart_discord/utilities.dart' as utilities;
 import 'package:dart_discord/server_channel.dart' as server_channel;
 import 'package:dart_discord/moderator.dart' as moderator;
+import 'package:dart_discord/channels.dart' as channels;
 
 void main(List<String> args) {
   if (args.isEmpty) {
-    print('Please provide a command');
+    print('Please provide a command!');
   } else {
     final command = args[0];
 
@@ -24,18 +25,18 @@ void main(List<String> args) {
       if (password == confirmPassword) {
         register_user.saveUser(username, password!);
       } else {
-        print("passwords do not match");
+        print("Passwords do not match");
       }
     } else if (command == 'login') {
-      if (args.length != 3) {
-        print('Usage: discord login <username> <password>');
+      if (args.length != 2) {
+        print('Usage: discord login <username>');
         return;
       }
 
       final username = args[1];
-      final password = args[2];
+      final password = utilities.promptForPassword("Enter Password: ");
 
-      final loggedIn = login_user.logIn(username, password);
+      final loggedIn = login_user.logIn(username, password!);
       print(loggedIn ? 'Login successful' : 'Login failed');
 
       if (loggedIn) {
@@ -114,26 +115,41 @@ void main(List<String> args) {
       stdout.write("Enter message contents: ");
       final messageString = stdin.readLineSync();
 
-      server_channel.sendMessageOnChannel(
+      channels.sendMessageOnChannel(
           channelName, messageString!, serverName, categoryName);
     } else if (command == "commands") {
       register_user.showCommands();
     } else if (command == "createchannel") {
-      if (args.length != 6) {
+      if (args.length != 4) {
         print(
-            "Usage: discord createchannel <channel name> <category name> <server name> <onlyMod access> <channel type>");
-        // serverName, channelName, categoryName, onlyModAccess, channelType
+            "Usage: discord createchannel <channel name> <category name> <server name> ");
         return;
       }
+      stdout.write("Enter ChannelType: ");
+      final channelType = stdin.readLineSync();
 
-      final channelName = args[1];
-      final categoryName = args[2];
-      final serverName = args[3];
-      final onlyModAccess = args[4];
-      final channelType = args[5];
+      if (channelType == "text" ||
+          channelType == "announcement" ||
+          channelType == "stage" ||
+          channelType == "voice" ||
+          channelType == "rules") {
+        final channelName = args[1];
+        final categoryName = args[2];
+        final serverName = args[3];
 
-      server_channel.addChannel(
-          serverName, channelName, categoryName, onlyModAccess, channelType);
+        channels.addChannel(serverName, channelName, categoryName, channelType);
+      } else {
+        print("Enter a valid channel type");
+      }
+    } else if (command == "servermessage") {
+      if (args.length != 3) {
+        print("Usage: discord servermessage <server name> <channel name>");
+        return;
+      }
+      final serverName = args[1];
+      final channelName = args[2];
+
+      server_channel.printMessages(serverName, channelName);
     } else {
       print("Incorrect command, watchOut for documentation!");
     }

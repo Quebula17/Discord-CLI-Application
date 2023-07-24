@@ -1,5 +1,6 @@
-// import 'package:dart_discord/server_channel.dart' as server_channel;
 import 'package:dart_discord/database.dart' as database;
+import 'package:dart_discord/server_utilities.dart' as server_utilities;
+import 'package:dart_discord/login_user_db.dart' as login_user_db;
 
 class Category {
   String categoryName;
@@ -46,4 +47,18 @@ Map<String, dynamic> returnCategoryInServer(
       .indexWhere((category) => category['categoryName'] == categoryName);
 
   return categoriesInServer[categoryIndex];
+}
+
+void joinCategory(String categoryName, String serverName) {
+  final servers = database.readServerDatabase();
+  final username = login_user_db.loggedInUser()['username'];
+
+  if (server_utilities.isInServer(username, serverName) &&
+      categoryExists(serverName, categoryName)) {
+    final category = returnCategoryInServer(serverName, categoryName);
+    category['usersInCategory'].add(username);
+    database.writeServerDatabase(servers);
+  } else {
+    print("join server in order to join categories");
+  }
 }
