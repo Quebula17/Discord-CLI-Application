@@ -43,3 +43,10 @@ int returnUserIndex(String userName) {
 
   return userIndex;
 }
+
+int returnServerIndex(String serverName) {
+  final servers = readServerDatabase();
+  final serverIndex =
+      servers.indexWhere((server) => server['serverName'] == serverName);
+  return serverIndex;
+}

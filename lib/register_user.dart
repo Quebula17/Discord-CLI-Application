@@ -1,6 +1,6 @@
 import 'package:crypt/crypt.dart';
-import 'package:dart_discord/direct_message.dart' as direct_message;
 import 'package:dart_discord/database.dart' as database;
+import 'package:dart_discord/login_user.dart' as login_user;
 
 class User {
   String userName;
@@ -8,6 +8,7 @@ class User {
 
   List<dynamic> sentMessageLog = [];
   List<dynamic> receivedMessageLog = [];
+  List<dynamic> serversJoined = [];
 
   User(this.userName, this.passwordHash);
 
@@ -17,6 +18,7 @@ class User {
       "password": passwordHash,
       "sentMessages": sentMessageLog,
       "receivedMessages": receivedMessageLog,
+      "serversJoined": serversJoined,
     };
   }
 }
@@ -27,7 +29,7 @@ String hashPassword(String password) {
 }
 
 void saveUser(String userName, String password) {
-  if (direct_message.inDatabase(userName) == false) {
+  if (login_user.inDatabase(userName) == false) {
     final user = User(userName, hashPassword(password));
     final users = database.readUserDatabase();
     users.add(user.userObject());
@@ -37,20 +39,4 @@ void saveUser(String userName, String password) {
   } else {
     print("Username taken, enter another username");
   }
-}
-
-void showCommands() {
-  print("discord register <username> <password>\n");
-  print('discord login <username> <password>\n');
-  print('discord login <username> <password>\n');
-  print("discord send <receiver's username>\n");
-  print("discord logout\n");
-  print("discord print received and discord print sent\n");
-  print("discord showserver <server name>\n");
-  print("discord createserver <server name>\n");
-  print("discord joinserver <server name>\n");
-  print("discord addmod <moderator username> <server name>\n");
-  print("discord message <channel name> <category name> <server name>\n");
-  print(
-      "discord createchannel <channel name> <category name> <server name> <onlyMod access> <channel type>\n");
 }

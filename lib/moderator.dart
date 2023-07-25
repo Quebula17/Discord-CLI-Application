@@ -25,7 +25,7 @@ void addMod(moderatorName, serverName) {
   }
 }
 
-List<dynamic> printModerators(String serverName) {
+List<dynamic> returnModerators(String serverName) {
   final servers = database.readServerDatabase();
   final serverIndex =
       servers.indexWhere((server) => server['serverName'] == serverName);
@@ -35,7 +35,7 @@ List<dynamic> printModerators(String serverName) {
 
 bool isModerator(String userName, String serverName) {
   bool isMod = false;
-  final moderatorList = printModerators(serverName);
+  final moderatorList = returnModerators(serverName);
   final moderatorIndex = moderatorList.indexWhere((user) => user == userName);
 
   if (moderatorIndex != -1) {
@@ -43,5 +43,19 @@ bool isModerator(String userName, String serverName) {
     return isMod;
   } else {
     return isMod;
+  }
+}
+
+void printModerators(String serverName) async {
+  final userName = login_user_db.loggedInUser()['username'];
+  if (userName != null) {
+    if (server_utilities.isInServer(userName, serverName)) {
+      print("Printing moderators in server $serverName");
+      final moderatorList = returnModerators(serverName);
+      for (final moderator in moderatorList) {
+        print(moderator);
+        await Future.delayed(Duration(seconds: 2));
+      }
+    }
   }
 }

@@ -86,6 +86,7 @@ void sendMessageOnChannel(String channelName, String messageContents,
   if (serverIndex != -1 && channelIndex != -1) {
     if (server_utilities.userIsInCategory(categoryName, serverName) == true &&
             isModOnly == "false" ||
+        servers[serverIndex]['ownerUsername'] == username ||
         moderator.isModerator(username, serverName)) {
       channelsInServer[channelIndex]['messageLog'].add(message.messageObject());
       database.writeServerDatabase(servers);

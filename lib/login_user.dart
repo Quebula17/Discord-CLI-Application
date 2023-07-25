@@ -7,12 +7,10 @@ Map<String, dynamic> concernedUser = {};
 
 bool inDatabase(String userName) {
   bool isInDatabase = false;
-  final users = database.readUserDatabase();
   final userIndex = database.returnUserIndex(userName);
 
   if (userIndex != -1) {
     isInDatabase = true;
-    concernedUser = users[userIndex];
   }
   return isInDatabase;
 }

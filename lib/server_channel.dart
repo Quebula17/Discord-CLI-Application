@@ -48,10 +48,16 @@ void createServer(serverName) {
   try {
     final ownerUsername = login_user_db.loggedInUser()['username'];
     final server = Server(serverName, ownerUsername);
-    server.usersList.add(ownerUsername);
+
     final servers = database.readServerDatabase();
+    final users = database.readUserDatabase();
+    final userIndex = database.returnUserIndex(ownerUsername);
+
     servers.add(server.serverObject());
     database.writeServerDatabase(servers);
+
+    users[userIndex]['serversJoined'].add(serverName);
+    database.writeUserDatabase(users);
     print("The server $serverName was created!");
   } catch (e) {
     print("You need to login to create a server");
@@ -70,7 +76,13 @@ void joinServer(String serverName) {
         server_utilities.isInServer(userName, serverName) == false) {
       servers[serverIndex]['usersList'].add(userName);
       database.writeServerDatabase(servers);
-      print("Sever was joined successfully!");
+
+      final users = database.readUserDatabase();
+      final userIndex = database.returnUserIndex(userName);
+
+      users[userIndex]['serversJoined'].add(serverName);
+      database.writeUserDatabase(users);
+      print("Sever $serverName was joined successfully!");
     } else {
       if (serverIndex == -1) {
         print("The server with the given name does not exist");

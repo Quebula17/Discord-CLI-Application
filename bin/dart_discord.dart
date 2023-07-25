@@ -6,6 +6,7 @@ import 'package:dart_discord/utilities.dart' as utilities;
 import 'package:dart_discord/server_channel.dart' as server_channel;
 import 'package:dart_discord/moderator.dart' as moderator;
 import 'package:dart_discord/channels.dart' as channels;
+import 'package:dart_discord/server_utilities.dart' as server_utilities;
 
 void main(List<String> args) {
   if (args.isEmpty) {
@@ -15,7 +16,7 @@ void main(List<String> args) {
 
     if (command == 'register') {
       if (args.length != 2) {
-        print("Usage: discord register <username>");
+        print("Usage: dartcord register <username>");
         return;
       }
       final username = args[1];
@@ -29,7 +30,7 @@ void main(List<String> args) {
       }
     } else if (command == 'login') {
       if (args.length != 2) {
-        print('Usage: discord login <username>');
+        print('Usage: dartcord login <username>');
         return;
       }
 
@@ -43,12 +44,12 @@ void main(List<String> args) {
         final unreadMessages = utilities.totalUnreadMessages();
         if (unreadMessages != 0) {
           print("You currently have $unreadMessages unread messages\n"
-              "Write 'discord received messsages' to see received messages");
+              "Write 'dartcord print received' to see received messages");
         }
       }
     } else if (command == 'send') {
       if (args.length != 2) {
-        print("Usage: discord send <receiver's username>");
+        print("Usage: dartcord send <receiver's username>");
         return;
       }
       stdout.write("Enter message contents: ");
@@ -58,13 +59,13 @@ void main(List<String> args) {
       direct_message.sendMessage(receiverUsername, messageString!);
     } else if (command == 'logout') {
       if (args.length != 1) {
-        print("Usage: discord logout");
+        print("Usage: dartcord logout");
         return;
       }
       login_user.logOut();
     } else if (command == 'print') {
       if (args.length != 2) {
-        print("Usage: discord print received and discord print sent");
+        print("Usage: dartcord print received\ndartcord print sent");
         return;
       } else {
         if (args[1] == "received") {
@@ -75,27 +76,27 @@ void main(List<String> args) {
       }
     } else if (command == "showserver") {
       if (args.length != 2) {
-        print("Usage: discord showserver <server name>");
+        print("Usage: dartcord showserver <server name>");
         return;
       }
       final serverName = args[1];
       server_channel.printServer(serverName);
     } else if (command == "createserver") {
       if (args.length != 2) {
-        print("Usage: discord createserver <server name>");
+        print("Usage: dartcord createserver <server name>");
       }
       final serverName = args[1];
       server_channel.createServer(serverName);
     } else if (command == "joinserver") {
       if (args.length != 2) {
-        print("Usage: discord joinserver <server name>");
+        print("Usage: dartcord joinserver <server name>");
         return;
       }
       final serverName = args[1];
       server_channel.joinServer(serverName);
     } else if (command == "addmod") {
       if (args.length != 3) {
-        print("Usage: discord addmod <moderator username> <server name>");
+        print("Usage: dartcord addmod <moderator username> <server name>");
         return;
       }
 
@@ -105,7 +106,7 @@ void main(List<String> args) {
     } else if (command == "message") {
       if (args.length != 4) {
         print(
-            "Usage: discord message <channel name> <category name> <server name>");
+            "Usage: dartcord message <channel name> <category name> <server name>");
         return;
       }
       final channelName = args[1];
@@ -118,11 +119,11 @@ void main(List<String> args) {
       channels.sendMessageOnChannel(
           channelName, messageString!, serverName, categoryName);
     } else if (command == "commands") {
-      register_user.showCommands();
+      utilities.showCommands();
     } else if (command == "createchannel") {
       if (args.length != 4) {
         print(
-            "Usage: discord createchannel <channel name> <category name> <server name> ");
+            "Usage: dartcord createchannel <channel name> <category name> <server name> ");
         return;
       }
       stdout.write("Enter ChannelType: ");
@@ -143,13 +144,28 @@ void main(List<String> args) {
       }
     } else if (command == "servermessage") {
       if (args.length != 3) {
-        print("Usage: discord servermessage <server name> <channel name>");
+        print("Usage: dartcord servermessage <server name> <channel name>");
         return;
       }
       final serverName = args[1];
       final channelName = args[2];
 
       server_channel.printMessages(serverName, channelName);
+    } else if (command == "exit") {
+      if (args.length != 2) {
+        print("Usage: dartcord exit <server name>");
+        return;
+      }
+
+      final serverName = args[1];
+      server_utilities.exitServer(serverName);
+    } else if (command == "terminate") {
+      if (args.length != 1) {
+        print("Usage: dartcord terminate");
+        return;
+      }
+
+      utilities.deleteUserAccount();
     } else {
       print("Incorrect command, watchOut for documentation!");
     }

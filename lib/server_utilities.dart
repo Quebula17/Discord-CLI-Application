@@ -1,7 +1,8 @@
 import 'package:dart_discord/database.dart' as database;
-import 'package:dart_discord/direct_message.dart' as direct_message;
 import 'package:dart_discord/login_user_db.dart' as login_user_db;
 import 'package:dart_discord/categories.dart' as categories;
+import 'package:dart_discord/moderator.dart' as moderator;
+import 'package:dart_discord/login_user.dart' as login_user;
 
 bool isInServer(String userName, String serverName) {
   bool inServer = false;
@@ -13,7 +14,8 @@ bool isInServer(String userName, String serverName) {
   final userInServerIndex =
       usersInServer.indexWhere((user) => user == userName);
 
-  if (direct_message.inDatabase(userName) == true && userInServerIndex != -1) {
+  if (login_user.inDatabase(userName) == true && userInServerIndex != -1 ||
+      servers[serverIndex]['ownerUsername'] == userName) {
     inServer = true;
     return inServer;
   } else {
@@ -40,5 +42,30 @@ bool userIsInCategory(String categoryName, String serverName) {
   } else {
     print("The user is not in the server");
     return false;
+  }
+}
+
+void exitServer(String serverName) {
+  final userName = login_user_db.loggedInUser()['username'];
+  final servers = database.readServerDatabase();
+  final serverIndex =
+      servers.indexWhere((server) => server['serverName'] == serverName);
+  if (login_user_db.loggedInUser()['username'] != null &&
+      serverIndex != -1 &&
+      isInServer(userName, serverName) == true) {
+    servers[serverIndex]['usersList'].remove(userName);
+    if (moderator.isModerator(userName, serverName)) {
+      servers[serverIndex]['moderatorList'].remove(userName);
+    }
+    database.writeServerDatabase(servers);
+    print("Left server $serverName successfully");
+  } else {
+    if (login_user_db.loggedInUser()['username'] == null) {
+      print("You are currently logged out");
+    } else if (serverIndex == -1) {
+      print("The server $serverName does not exist");
+    } else {
+      print("You aren't a member of the server");
+    }
   }
 }
