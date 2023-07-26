@@ -25,7 +25,10 @@ void deleteUserAccount() {
       if (users[userIndex]['serversJoined'] != []) {
         for (final server in users[userIndex]['serversJoined']) {
           final serverIndex = database.returnServerIndex(server);
-          server_utilities.exitServer(server);
+
+          if (servers[serverIndex]['ownerUsername'] != username) {
+            server_utilities.exitServer(server);
+          }
 
           if (servers[serverIndex]['ownerUsername'] == username) {
             if (servers[serverIndex]['usersList'].length != 0) {
@@ -61,7 +64,7 @@ void messagesRead() {
 
   final users = database.readUserDatabase();
   for (final message in users[userIndex]['receivedMessages']) {
-    message['isRead'] == true;
+    message['isRead'] = "true";
   }
   database.writeUserDatabase(users);
 }
