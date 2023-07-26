@@ -7,6 +7,10 @@ import 'package:dart_discord/server_channel.dart' as server_channel;
 
 enum ChannelType { text, voice, stage, rules, announcement }
 
+final red = '\u001b[31m';
+final green = '\u001b[32m';
+final reset = '\u001b[0m';
+
 class Channel {
   String channelName;
   List<dynamic> messageLog = [];
@@ -58,12 +62,14 @@ void addChannel(serverName, channelName, categoryName, channelType) {
       }
 
       database.writeServerDatabase(servers);
-      print("Channel $channelName in $categoryName was created successfully!");
+      print(
+          "${green}Channel $channelName in $categoryName was created successfully!$reset");
     } else {
-      print("Only the owner of the server could create a new channel");
+      print(
+          "${red}Only the owner of the server could create a new channel$reset");
     }
   } else {
-    print("The server with the given name does not exist");
+    print("${red}The server with the given name does not exist$reset");
   }
 }
 
@@ -90,12 +96,13 @@ void sendMessageOnChannel(String channelName, String messageContents,
         moderator.isModerator(username, serverName)) {
       channelsInServer[channelIndex]['messageLog'].add(message.messageObject());
       database.writeServerDatabase(servers);
-      print("Message sent successfully!");
+      print("${green}Message sent successfully!$reset");
     } else {
-      print("you don't have the access to send messages on the channel");
+      print(
+          "${red}You don't have the access to send messages on the channel $channelName$reset");
     }
   } else {
-    print("Either the server or the channel doesn't exist");
+    print("${red}Either the server or the channel doesn't exist$reset");
   }
 }
 

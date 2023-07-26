@@ -2,6 +2,10 @@ import 'package:dart_discord/database.dart' as database;
 import 'package:dart_discord/server_utilities.dart' as server_utilities;
 import 'package:dart_discord/login_user_db.dart' as login_user_db;
 
+final red = '\u001b[31m';
+final green = '\u001b[32m';
+final reset = '\u001b[0m';
+
 class Category {
   String categoryName;
   List<String> channelsInCategory = [];
@@ -58,7 +62,8 @@ void joinCategory(String categoryName, String serverName) {
     final category = returnCategoryInServer(serverName, categoryName);
     category['usersInCategory'].add(username);
     database.writeServerDatabase(servers);
+    print("${green}Joined category $categoryName successfully$reset");
   } else {
-    print("join server in order to join categories");
+    print("${red}Join server in order to join categories$reset");
   }
 }

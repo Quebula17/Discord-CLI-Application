@@ -4,6 +4,12 @@ import 'package:dart_discord/categories.dart' as categories;
 import 'package:dart_discord/moderator.dart' as moderator;
 import 'package:dart_discord/login_user.dart' as login_user;
 
+final red = '\u001b[31m';
+final green = '\u001b[32m';
+final reset = '\u001b[0m';
+final blue = '\u001b[34m';
+final yellow = '\u001b[33m';
+
 bool isInServer(String userName, String serverName) {
   bool inServer = false;
   final servers = database.readServerDatabase();
@@ -36,11 +42,11 @@ bool userIsInCategory(String categoryName, String serverName) {
       userInCategory = true;
       return userInCategory;
     } else {
-      print("The user is not in the category");
+      print("${red}The user is not in the category$reset");
       return userInCategory;
     }
   } else {
-    print("The user is not in the server");
+    print("${red}The user is not in the server$reset");
     return false;
   }
 }
@@ -58,14 +64,14 @@ void exitServer(String serverName) {
       servers[serverIndex]['moderatorList'].remove(userName);
     }
     database.writeServerDatabase(servers);
-    print("Left server $serverName successfully");
+    print("${green}Left server $serverName successfully$reset");
   } else {
     if (login_user_db.loggedInUser()['username'] == null) {
-      print("You are currently logged out");
+      print("${red}You are currently logged out$reset");
     } else if (serverIndex == -1) {
-      print("The server $serverName does not exist");
+      print("${red}The server $serverName does not exist$reset");
     } else {
-      print("You aren't a member of the server");
+      print("${red}You aren't a member of the server$reset");
     }
   }
 }

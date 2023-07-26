@@ -4,6 +4,11 @@ import 'package:dart_discord/server_utilities.dart' as server_utilities;
 import 'package:dart_discord/login_user.dart' as login_user;
 import 'package:dart_discord/channels.dart' as channels;
 
+final red = '\u001b[31m';
+final green = '\u001b[32m';
+final reset = '\u001b[0m';
+final yellow = '\u001b[33m';
+
 class ServerMessage {
   String messageContents;
   String? dateTime;
@@ -58,9 +63,9 @@ void createServer(serverName) {
 
     users[userIndex]['serversJoined'].add(serverName);
     database.writeUserDatabase(users);
-    print("The server $serverName was created!");
+    print("${green}The server $serverName was created!$reset");
   } catch (e) {
-    print("You need to login to create a server");
+    print("${red}You need to login to create a server$reset");
   }
 }
 
@@ -82,20 +87,20 @@ void joinServer(String serverName) {
 
       users[userIndex]['serversJoined'].add(serverName);
       database.writeUserDatabase(users);
-      print("Sever $serverName was joined successfully!");
+      print("${green}Sever $serverName was joined successfully!$reset");
     } else {
       if (serverIndex == -1) {
-        print("The server with the given name does not exist");
+        print("${red}The server with the given name does not exist$reset");
       } else {
         if (login_user.inDatabase(userName) != true) {
-          print("The user does not exist");
+          print("${red}The user does not exist$reset");
         } else {
-          print("You are already in this server");
+          print("${red}You are already in this server$reset");
         }
       }
     }
   } catch (e) {
-    print("login in order to join a server");
+    print("${red}Login in order to join a server$reset");
   }
 }
 
@@ -111,17 +116,17 @@ void printMessages(String serverName, String channelName) {
 
     if (channelIndex != -1) {
       for (final message in channelsInServer[channelIndex]['messageLog']) {
-        print("Sender's Username: ${message['sentBy']}\n"
+        print("${yellow}Sender's Username: ${message['sentBy']}\n"
             "Time: ${message['dateTime']}\n"
             "Message: ${message['messageContents']}\n"
-            "Channel Type: ${channels.returnChannelType(serverName, channelName)}");
+            "Channel Type: ${channels.returnChannelType(serverName, channelName)}$reset");
       }
     } else {
       print(
-          "The channel $channelName does not exits in the server $serverName");
+          "${red}The channel $channelName does not exits in the server $serverName$reset");
     }
   } else {
-    print("The server $serverName does not exist");
+    print("${red}The server $serverName does not exist$reset");
   }
 }
 
@@ -135,14 +140,14 @@ void printServer(String serverName) async {
           login_user_db.loggedInUser()['username'], serverName)) {
     print("Printing users in server $serverName...");
     for (final user in servers[serverIndex]['usersList']) {
-      print("$user");
+      print("$yellow$user$reset");
       await Future.delayed(Duration(seconds: 2));
     }
   } else {
     if (serverIndex == -1) {
-      print("The server does not exist");
+      print("${red}The server does not exist$reset");
     } else {
-      print("login and join server in order to view");
+      print("${red}Login and join server in order to view$reset");
     }
   }
 }

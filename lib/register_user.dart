@@ -2,6 +2,10 @@ import 'package:crypt/crypt.dart';
 import 'package:dart_discord/database.dart' as database;
 import 'package:dart_discord/login_user.dart' as login_user;
 
+final red = '\u001b[31m';
+final green = '\u001b[32m';
+final reset = '\u001b[0m';
+
 class User {
   String userName;
   String passwordHash;
@@ -34,9 +38,8 @@ void saveUser(String userName, String password) {
     final users = database.readUserDatabase();
     users.add(user.userObject());
     database.writeUserDatabase(users);
-    print("Registered successfully!\n"
-        "Login to start messaging!");
+    print("${green}Registered successfully\nLogin to start messaging!$reset");
   } else {
-    print("Username taken, enter another username");
+    print("${red}Username taken, enter another username$reset");
   }
 }

@@ -3,6 +3,11 @@ import 'package:dart_discord/login_user_db.dart' as login_user_db;
 import 'package:dart_discord/utilities.dart' as utilities;
 import 'package:dart_discord/login_user.dart' as login_user;
 
+final red = '\u001b[31m';
+final green = '\u001b[32m';
+final reset = '\u001b[0m';
+final yellow = '\u001b[33m';
+
 class Message {
   String messageContents;
   String? dateTime;
@@ -38,12 +43,12 @@ void sendMessage(String receiverUsername, String messageString) {
     users[receiverIndex]['receivedMessages'].add(message.messageObject());
 
     database.writeUserDatabase(users);
-    print("Message sent to $receiverUsername successfully!");
+    print("${green}Message sent to $receiverUsername successfully!$reset");
   } else {
     if (senderUsername == receiverUsername) {
-      print("You cannot send message to yourself!");
+      print("${red}You cannot send message to yourself$reset");
     } else {
-      print("User with given username doesn't exist");
+      print("${red}User with given username doesn't exist$reset");
     }
   }
 }
@@ -55,13 +60,13 @@ void printReceivedMessages() {
 
   if (users[receiverIndex]['receivedMessages'] != []) {
     for (final message in users[receiverIndex]['receivedMessages']) {
-      print("Sender's Username: ${message['sentBy']}\n"
+      print("${yellow}Sender's Username: ${message['sentBy']}\n"
           "Time: ${message['dateTime']}\n"
-          "Message: ${message['messageContents']}\n");
+          "Message: ${message['messageContents']}\n$reset");
     }
     utilities.messagesRead();
   } else {
-    print("No messages to show");
+    print("${red}No messages to show on terminal$reset");
   }
 }
 
@@ -72,11 +77,11 @@ void printSentMessages() {
 
   if (users[senderIndex]['sentMessages'] != []) {
     for (final message in users[senderIndex]['sentMessages']) {
-      print("Receiver's Username: ${message['receivedBy']}\n"
+      print("${yellow}Receiver's Username: ${message['receivedBy']}\n"
           "Time: ${message['dateTime']}\n"
-          "Message: ${message['messageContents']}\n");
+          "Message: ${message['messageContents']}\n$reset");
     }
   } else {
-    print("No messages to show");
+    print("${red}No messages to show$reset");
   }
 }

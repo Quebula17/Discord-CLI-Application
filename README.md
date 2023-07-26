@@ -1,4 +1,4 @@
-# Dart Discord CLI 
+# Dartcord
 
 [This is a CLI tool which emulates and functions like discord]
 
@@ -19,8 +19,4 @@ Once you have Dart installed, you can follow these steps to run the project:
 3. Now you can use the 'discord' command in your terminal and interact with the CLI.
 
 ## Commands
-
-Use the following command to get a brief of every command available in the CLI
-```bash 
-    discord commands
 

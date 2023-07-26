@@ -5,6 +5,12 @@ import 'dart:io';
 import 'dart:math';
 import 'package:dart_discord/server_utilities.dart' as server_utilities;
 
+final red = '\u001b[31m';
+final green = '\u001b[32m';
+final reset = '\u001b[0m';
+final blue = '\u001b[34m';
+final yellow = '\u001b[33m';
+
 void deleteUserAccount() {
   final users = database.readUserDatabase();
   final username = login_user_db.loggedInUser()['username'];
@@ -40,12 +46,12 @@ void deleteUserAccount() {
       login_user_db.logOutUser();
       database.writeUserDatabase(users);
 
-      print("Your account was successfully deleted");
+      print("${yellow}Your account was successfully deleted$reset");
     } else {
-      print("Incorrect password entered");
+      print("${red}Incorrect password entered$reset");
     }
   } else {
-    print("You are currently logged out");
+    print("${red}You are currently logged out$reset");
   }
 }
 
@@ -75,27 +81,11 @@ int totalUnreadMessages() {
 }
 
 String? promptForPassword(String prompt) {
-  stdout.write(prompt);
+  stdout.write("$blue$prompt$reset");
   stdin.echoMode = false;
   final password = stdin.readLineSync();
   stdin.echoMode = true;
   stdout.write("\n");
 
   return password;
-}
-
-void showCommands() {
-  print("discord register <username> <password>\n");
-  print('discord login <username> <password>\n');
-  print('discord login <username> <password>\n');
-  print("discord send <receiver's username>\n");
-  print("discord logout\n");
-  print("discord print received and discord print sent\n");
-  print("discord showserver <server name>\n");
-  print("discord createserver <server name>\n");
-  print("discord joinserver <server name>\n");
-  print("discord addmod <moderator username> <server name>\n");
-  print("discord message <channel name> <category name> <server name>\n");
-  print(
-      "discord createchannel <channel name> <category name> <server name> <onlyMod access> <channel type>\n");
 }

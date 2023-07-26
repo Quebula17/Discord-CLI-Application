@@ -3,7 +3,9 @@ import 'package:dart_discord/register_user.dart' as register_user;
 import 'package:dart_discord/database.dart' as database;
 import 'package:dart_discord/login_user_db.dart' as login_user_db;
 
-Map<String, dynamic> concernedUser = {};
+final red = '\u001b[31m';
+final green = '\u001b[32m';
+final reset = '\u001b[0m';
 
 bool inDatabase(String userName) {
   bool isInDatabase = false;
@@ -32,13 +34,14 @@ bool logIn(String userName, String password) {
     return true;
   } else {
     if (inDatabase(userName) == false) {
-      print("The user $userName does not exist");
+      print("${red}The user $userName does not exist$reset");
     } else if (isCorrectPassword(userName, password) == false) {
-      print("Incorrect password entered");
+      print("${red}Incorrect password entered$reset");
     } else if (login_user_db.loggedInUser()['username'] == userName) {
-      print("You are already logged in");
+      print("${red}You are already logged in$reset");
     } else {
-      print("You need to logout before you can login with another account");
+      print(
+          "${red}You need to logout before you can login with another account$reset");
     }
     return false;
   }
@@ -48,8 +51,8 @@ void logOut() {
   final loggedInUser = login_user_db.loggedInUser();
   if (loggedInUser != {}) {
     login_user_db.logOutUser();
-    print("User logged out successfully");
+    print("${green}Logged out successfully$reset");
   } else {
-    print("You aren't logged in");
+    print("${red}You aren't logged in$reset");
   }
 }
