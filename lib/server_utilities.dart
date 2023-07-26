@@ -58,7 +58,8 @@ void exitServer(String serverName) {
       servers.indexWhere((server) => server['serverName'] == serverName);
   if (login_user_db.loggedInUser()['username'] != null &&
       serverIndex != -1 &&
-      isInServer(userName, serverName) == true) {
+      isInServer(userName, serverName) == true &&
+      servers[serverIndex]['ownerUsername'] != userName) {
     servers[serverIndex]['usersList'].remove(userName);
     if (moderator.isModerator(userName, serverName)) {
       servers[serverIndex]['moderatorList'].remove(userName);
@@ -70,6 +71,8 @@ void exitServer(String serverName) {
       print("${red}You are currently logged out$reset");
     } else if (serverIndex == -1) {
       print("${red}The server $serverName does not exist$reset");
+    } else if (servers[serverIndex]['ownerUsername'] == userName) {
+      print("${red}You cannot leave a server you own$reset");
     } else {
       print("${red}You aren't a member of the server$reset");
     }
