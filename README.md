@@ -22,9 +22,9 @@ Once you have Dart installed, you can follow these steps to run the project:
     $ dart pub global activate --source path .
 
 3. Run the following command to get all the required dependencies:
-``` bash
-$ dart pub get
-```
+    ``` bash
+    $ dart pub get
+    ```
 
 4. Now you can use the 'dartcord' command in your terminal and interact with the CLI.
 
@@ -47,7 +47,7 @@ $ dartcord login <username>
 * This will prompt you to enter message contents which will be sent to the person whose username is provided.
 
 ```bash
-$ dartcord send <receiver's username>
+$ dartcord send <receiver username>
 ```
 
 * This will print the messages sent or received by the user respectively.
@@ -71,22 +71,22 @@ $ dartcord createserver <server name>
 * This will make the user currently logged in join the server with the given servername.
 
 ```bash
-$ dartcord joinserver <receiver's username>
-```
+$ dartcord joinserver <receiver username>
+``` 
 
 
 * This will add a moderator to the server. A moderator is a role with a special status, and has permission to send message on every channel in the server.
 Only the owner of the server could promote a user in the server to a moderator.
 
 ```bash
-$ dartcord addmod <moderator's username> <server name>
+$ dartcord addmod <moderator username> <server name>
 ```
 
 
 * This will demote the user from the role of moderator to that of a base user and could only be used by the owner of the server.
 
 ```bash
-$ dartcord removemod <moderator's username> <server name>
+$ dartcord removemod <moderator username> <server name>
 ```
 
 * This will print the list of the moderators in the given server.
@@ -133,4 +133,12 @@ $ dartcord terminate
 ## Authors
 
 [Saurabh Rana](https://github.com/Quebula17)
+
+## Mentors
+
+[Aryan Ranjan](https://github.com/just-ary27)
+
+## License
+
+Licensed under the [MIT License](https://github.com/Quebula17/dart_discord/blob/main/LICENSE)
 
